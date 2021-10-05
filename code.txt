@@ -1,0 +1,38 @@
+-- Function xeploai
+CREATE OR REPLACE FUNCTION XEPLOAI 
+(
+  AVG_MARK IN NUMBER 
+) RETURN VARCHAR2 IS
+   results varchar2(50); 
+BEGIN
+    results:='Điểm không hợp lệ';
+    IF AVG_MARK >= 8 THEN
+        results := 'Giỏi';
+    ELSIF AVG_MARK >= 6.5 THEN
+        results := 'Khá';
+    ELSIF AVG_MARK >= 5 THEN
+        results :=  'Trung Bình';
+    ELSIF AVG_MARK < 5 THEN
+        results := 'Học lại';
+    END IF;
+  RETURN results;
+END XEPLOAI;
+
+-- Su dung xep loai
+Select STU_ID, NAME, CLASS_ID, AVG_MARK, XEPLOAI(AVG_MARK)
+from Student;
+
+--Stored procedure
+create or replace NONEDITIONABLE PROCEDURE INSERTNEWSTUDENT 
+(
+  STU_ID IN NUMBER 
+, NAME IN VARCHAR2 
+, AVG_MARK IN NUMBER 
+, CLASS_ID IN NUMBER 
+) AS 
+BEGIN
+  INSERT INTO "SYSTEM"."STUDENT" (STU_ID, NAME, AVG_MARK, CLASS_ID) VALUES (STU_ID, NAME, AVG_MARK, CLASS_ID);
+END INSERTNEWSTUDENT;
+
+-- Add student
+call  INSERTNEWSTUDENT(8,'Diệp Huyền Thanh',5.4,2);
